@@ -479,16 +479,16 @@ const searchOptions = computed(() => {
 
 const goUseGpts= async ( item: gptsType)=>{
     const saveObj= {model:  `${ item.gid }`   ,gpts:item}
-    gptConfigStore.setMyData(saveObj); 
+    gptConfigStore.setMyData(saveObj);
     if(chatStore.active){ //保存到对话框
         const  chatSet = new chatSetting( chatStore.active );
         //if( chatSet.findIndex()>-1 ) chatSet.save( saveObj )
         chatSet.save( saveObj )
     }
     ms.success(t('mjchat.success2'));
-    const gptUrl= `https://gpts.ddaiai.com/open/gptsapi/use`; 
+    const gptUrl= `https://gpts.ddaiai.com/open/gptsapi/use`;
     myFetch(gptUrl,item );
-     
+
     mlog('go local ', homeStore.myData.local );
     if(homeStore.myData.local!=='Chat') router.replace({name:'Chat',params:{uuid:chatStore.active}});
 
@@ -501,14 +501,14 @@ const renderOption = (option: { label: string,gpts?:gptsType }) => {
   if( prompt.value=='@'){
     //return [ h( NAvatar,{src:'https://cos.aitutu.cc/gpts/gpt4all.jpg',size:"small",round:true}),option.label ]
     return [h("div",{class:'flex justify-start items-center'
-    , onclick:()=>{  
+    , onclick:()=>{
       if(option.gpts)   goUseGpts(option.gpts) ;
       prompt.value='';
       setTimeout(() =>  prompt.value='', 80);
     }}
     ,[h(NAvatar,{src:option.gpts?.logo, "fallback-src" : 'https://cos.aitutu.cc/gpts/3.5net.png',size:"small",round:true, class:"w-8 h-8"})
-    , h('span', { class: 'pl-1' }, option.gpts?.name  ) 
-    , h('span', { class: 'line-clamp-1 flex-1 pl-1 opacity-50' }, option.label  ) 
+    , h('span', { class: 'pl-1' }, option.gpts?.name  )
+    , h('span', { class: 'line-clamp-1 flex-1 pl-1 opacity-50' }, option.label  )
     ])]
   }
   for (const i of promptTemplate.value) {
@@ -543,7 +543,7 @@ onMounted(() => {
 
 onUnmounted(() => {
 
-  if (loading.value)   controller.abort() 
+  if (loading.value)   controller.abort()
   homeStore.setMyData({isLoader:false});
 })
 
@@ -552,9 +552,9 @@ watch(()=>homeStore.myData.act,(n)=>{
     if(n=='draw')  scrollToBottom();
     if(n=='scrollToBottom') scrollToBottom();
     if(n=='scrollToBottomIfAtBottom') scrollToBottomIfAtBottom();
-    if(n=='gpt.submit' || n=='gpt.resubmit'){ 
+    if(n=='gpt.submit' || n=='gpt.resubmit'){
       loading.value = true;
-      if(chatStore.active){ 
+      if(chatStore.active){
         const  chatSet = new chatSetting( chatStore.active );
         if( chatSet.findIndex()==-1 ) { //如果是空保存到对话框
           chatSet.save( chatSet.getGptConfig() )
@@ -575,14 +575,14 @@ const ychat = computed( ()=>{
     scrollToBottomIfAtBottom();
   }
   return { text, dateTime: t('chat.preview')} as Chat.Chat;
-}) 
+})
 </script>
 
 <template>
   <div class="flex flex-col w-full h-full">
    <!-- v-if="isMobile" -->
     <HeaderComponent
-     
+
       :using-context="usingContext"
       @export="handleExport"
       @handle-clear="handleClear"
@@ -643,11 +643,11 @@ const ychat = computed( ()=>{
     <footer :class="footerClass" v-if="local!=='draw'">
       <div class="w-full max-w-screen-xl m-auto">
         <aiGptInput v-if="['gpt-4-vision-preview','gpt-3.5-turbo-16k'].indexOf(gptConfigStore.myData.model)>-1 || st.inputme "
-         v-model:modelValue="prompt" :disabled="buttonDisabled" 
+         v-model:modelValue="prompt" :disabled="buttonDisabled"
          :searchOptions="searchOptions"  :renderOption="renderOption"
           />
         <div class="flex items-center justify-between space-x-2" v-else>
-          <!-- 
+          <!--
           <HoverButton v-if="!isMobile" @click="handleClear">
             <span class="text-xl text-[#4f555e] dark:text-white">
               <SvgIcon icon="ri:delete-bin-line" />
@@ -693,7 +693,7 @@ const ychat = computed( ()=>{
     </footer>
   </div>
 
-  <drawListVue /> 
-  <aiGPT @finished="loading = false" /> 
-  <AiSiderInput v-if="isMobile"  :button-disabled="false" /> 
+  <drawListVue />
+  <aiGPT @finished="loading = false" />
+  <AiSiderInput v-if="isMobile"  :button-disabled="false" />
 </template>
